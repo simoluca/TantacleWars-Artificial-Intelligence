@@ -9,6 +9,7 @@ import time
 import heapq
 from creditPage import displayCredit
 
+# Definizione dei colori come costanti
 GREEN = (47,171,51)
 RED = (200,0,0)
 GRAY = (55,55,55)
@@ -17,7 +18,7 @@ WARMYELLOW = (255,255,85)
 
 class CellWar(object):
     def __init__(self):
-        # For statistics and achievement page purpose
+        # Inizializzazione delle statistiche e dei punteggi 
         self.gamesPlayed = 0
         self.loses = 0
         self.enemyKilled = 0
@@ -26,8 +27,9 @@ class CellWar(object):
         self.totalAssist = 0
         self.achievement = [self.gamesPlayed,self.loses,self.enemyKilled,\
                          self.needleLeft,self.totalMerge,self.totalAssist]
-        self.fadeTime = 3000 # music fadeout time
+        self.fadeTime = 3000 # Tempo di dissolvenza della musica
 
+    # Metodo per salvare e caricare i punteggi
     def saveLoad(self):
         self.achievement = [self.gamesPlayed,self.loses,self.enemyKilled,\
                          self.needleLeft,self.totalMerge,self.totalAssist]
@@ -40,6 +42,7 @@ class CellWar(object):
         outFile1.close()
         outFile2.close()
 
+    # Metodo per leggere i punteggi salvati
     def readFile(self):
         inFile1 = open('myLevelCleared.txt','rb')
         inFile2 = open('myAchievement.txt','rb')
@@ -533,7 +536,7 @@ class CellWar(object):
             
     def showGameOver(self):
         self.clock.tick(self.fps)
-        winImg = pygame.image.load('result4.jpg')
+        winImg = pygame.image.load('img/result4.jpg')
         self.screen.blit(winImg,(0,self.winImgy))
         font = pygame.font.SysFont("Courier",60,True)
         textObj = font.render("%d"%self.levelChosen,True,(255,255,255))
@@ -547,7 +550,7 @@ class CellWar(object):
 
     def showWin(self):
         self.clock.tick(self.fps)
-        winImg = pygame.image.load('result3.jpg')
+        winImg = pygame.image.load('img/result3.jpg')
         self.screen.blit(winImg,(0,self.winImgy))
         font = pygame.font.SysFont("Courier",60,True)
         textObj = font.render("%d"%self.levelChosen,True,(255,255,255))
@@ -805,7 +808,7 @@ class CellWar(object):
 
     def playShine(self,x,y,do=False):
         if do:
-            image = pygame.image.load(r"BOOM.png").convert_alpha()
+            image = pygame.image.load(r"img/BOOM.png").convert_alpha()
             self.screen.blit(image,(x-90,y-64)) # Adjust the center of BOOM
         
     def isCollide(self,s1,s2):
@@ -1120,39 +1123,39 @@ class CellWar(object):
             self.mode = "Loading"
             self.clock.tick(20)
             self.animateCount += 1
-            self.screen.blit(pygame.image.load("HeadPhone.jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/HeadPhone.jpg"),(0,0))
             pygame.display.update()
         self.mode = "Main Menu"
         # start playing music in the mainMenu
         self.levelCleared = [0,1,2,3,4,5,6,7,8,9]
         self.menuOption = ["Play","Help","Credit","Achievement"]
-        self.mainImages = [pygame.image.load('TPMenu1.jpg'),\
-                           pygame.image.load('TPMenu2.jpg'),\
-                           pygame.image.load('TPMenu3.jpg'),\
-                           pygame.image.load('TPMenu4.jpg')]
+        self.mainImages = [pygame.image.load('img/TPMenu1.jpg'),\
+                           pygame.image.load('img/TPMenu2.jpg'),\
+                           pygame.image.load('img/TPMenu3.jpg'),\
+                           pygame.image.load('img/TPMenu4.jpg')]
         
         # this is for when choosing backgrounds
-        self.backgroundImages = [pygame.image.load('Skyland.jpg'),\
-                                 pygame.image.load('StoneAge.jpg'),\
-                                 pygame.image.load('Universe.jpg')]
+        self.backgroundImages = [pygame.image.load('img/Skyland.jpg'),\
+                                 pygame.image.load('img/StoneAge.jpg'),\
+                                 pygame.image.load('img/Universe.jpg')]
         
         # this is for background
-        self.bgImagePool = [pygame.image.load('Skyland2.jpg'),\
-                            pygame.image.load('StoneAge2.jpg'),\
-                            pygame.image.load('Universe2.jpg')]
+        self.bgImagePool = [pygame.image.load('img/Skyland2.jpg'),\
+                            pygame.image.load('img/StoneAge2.jpg'),\
+                            pygame.image.load('img/Universe2.jpg')]
         
-        self.helpPages = [pygame.image.load('help1.jpg'),\
-                          pygame.image.load('help2.jpg'),\
-                          pygame.image.load('help3.jpg'),\
-                          pygame.image.load('help4.jpg'),\
-                          pygame.image.load('help5.jpg')]
+        self.helpPages = [pygame.image.load('img/help1.jpg'),\
+                          pygame.image.load('img/help2.jpg'),\
+                          pygame.image.load('img/help3.jpg'),\
+                          pygame.image.load('img/help4.jpg'),\
+                          pygame.image.load('img/help5.jpg')]
         
-        self.winImages = [pygame.image.load('result31.jpg'),\
-                          pygame.image.load('result32.jpg'),\
-                          pygame.image.load('result33.jpg')]
+        self.winImages = [pygame.image.load('img/result31.jpg'),\
+                          pygame.image.load('img/result32.jpg'),\
+                          pygame.image.load('img/result33.jpg')]
 
-        self.gameOverImages = [pygame.image.load('result41.jpg'),\
-                               pygame.image.load('result42.jpg')]
+        self.gameOverImages = [pygame.image.load('img/result41.jpg'),\
+                               pygame.image.load('img/result42.jpg')]
         self.levelPage = "1-3"
         self.doMainMenu()
 
@@ -1168,7 +1171,7 @@ class CellWar(object):
 
     def doBackground(self): # of depth 2
         self.mode = "Choose Background"
-        self.screen.blit(pygame.image.load('BGdefault.jpg'),(0,0))
+        self.screen.blit(pygame.image.load('img/BGdefault.jpg'),(0,0))
         (x,y) = pygame.mouse.get_pos()
         if 37 <= x <= 215 and 35 <= y <= 220:
             self.bgchoice = 0
@@ -1185,7 +1188,7 @@ class CellWar(object):
 
     def doWin(self):
         self.mode = "Win" # shift the self.mode to stop other running functions
-        self.screen.blit(pygame.image.load('result3.jpg'),(0,0))
+        self.screen.blit(pygame.image.load('img/result3.jpg'),(0,0))
         (x,y) = pygame.mouse.get_pos()
         if 162 <= x <= 244 and 558 <= y <= 631:
             self.winchoice = 0
@@ -1209,7 +1212,7 @@ class CellWar(object):
     def doGameOver(self):
         self.mode = "Game Over" # shift the self.mode
        
-        self.screen.blit(pygame.image.load('result4.jpg'),(0,0))
+        self.screen.blit(pygame.image.load('img/result4.jpg'),(0,0))
         (x,y) = pygame.mouse.get_pos()
         if 225 <= x <= 305 and 558 <= y <= 631:
             self.gameOverchoice = 0
@@ -1237,21 +1240,21 @@ class CellWar(object):
     def chooseLevel(self): # of depth 3
         pool = self.levelCleared + [self.levelCleared[-1]+1]
         if self.levelPage == "1-3":
-            self.screen.blit(pygame.image.load('level1-3.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level1-3.jpg'),(0,0))
             self.doLevel1_3()
         elif self.levelPage == "4-6":
             if len(pool) > 4: #[0,1,2,3,4]
-                self.screen.blit(pygame.image.load('level4-6available.jpg'),(0,0))
+                self.screen.blit(pygame.image.load('img/level4-6available.jpg'),(0,0))
                 self.doLevel4_6()
             else:
-                self.screen.blit(pygame.image.load('level4-6unavailable.jpg'),(0,0))
+                self.screen.blit(pygame.image.load('img/level4-6unavailable.jpg'),(0,0))
                 self.undoLevel4_6()
         elif self.levelPage == "7":
             if len(pool) == 8: #[0...7]
-                self.screen.blit(pygame.image.load('level7available.jpg'),(0,0))
+                self.screen.blit(pygame.image.load('img/level7available.jpg'),(0,0))
                 self.doLevel7()
             else:
-                self.screen.blit(pygame.image.load('level7unavailable.jpg'),(0,0))
+                self.screen.blit(pygame.image.load('img/level7unavailable.jpg'),(0,0))
                 self.undoLevel7()
         pygame.display.update()
 
@@ -1259,23 +1262,23 @@ class CellWar(object):
         self.mode = "Choose Level"
         (x,y) = pygame.mouse.get_pos()
         if 252 <= x <= 415 and 243 <= y <= 397:
-            self.screen.blit(pygame.image.load('level1-3sun.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level1-3sun.jpg'),(0,0))
 
         elif 300 <= x <= 382 and 595 <= y <= 672:
-            self.screen.blit(pygame.image.load('level1-3button.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level1-3button.jpg'),(0,0))
 
         elif 533 <= x <= 596 and 279 <= y <= 351:
-            self.screen.blit(pygame.image.load('level1-3arrow.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level1-3arrow.jpg'),(0,0))
 
         pygame.display.update()
 
     def finalLevel1_3(self):
         if len(self.levelCleared) == 1: #[0],initially
-            self.screen.blit(pygame.image.load("level123(1).jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level123(1).jpg"),(0,0))
         elif len(self.levelCleared) == 2: #[0,1]
-            self.screen.blit(pygame.image.load("level123(2).jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level123(2).jpg"),(0,0))
         else:
-            self.screen.blit(pygame.image.load("level123.jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level123.jpg"),(0,0))
         (text,tempLevelCleared,font2) = self.enterInterface()
         warning,maxLevel = (220,470),3
         # Unavailable level display
@@ -1303,18 +1306,18 @@ class CellWar(object):
         self.mode = "Choose Level"
         (x,y) = pygame.mouse.get_pos()
         if 87 <= x <= 154 and 279 <= y <= 355:
-            self.screen.blit(pygame.image.load('level4-6available1.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level4-6available1.jpg'),(0,0))
 
         elif 252 <= x <= 415 and 243 <= y <= 397:
             # choose one of 4-6
-            self.screen.blit(pygame.image.load('level4-6available3.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level4-6available3.jpg'),(0,0))
 
         elif 300 <= x <= 382 and 595 <= y <= 672:
             # press the button
-            self.screen.blit(pygame.image.load('level4-6available2.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level4-6available2.jpg'),(0,0))
 
         elif 533 <= x <= 596 and 279 <= y <= 351:
-            self.screen.blit(pygame.image.load('level4-6available4.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level4-6available4.jpg'),(0,0))
 
         pygame.display.update()
 
@@ -1322,13 +1325,13 @@ class CellWar(object):
         self.mode = "Choose Level"
         (x,y) = pygame.mouse.get_pos()
         if 87 <= x <= 154 and 279 <= y <= 355:
-            self.screen.blit(pygame.image.load('level7available1.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level7available1.jpg'),(0,0))
         elif 252 <= x <= 415 and 243 <= y <= 397:
             # choose one of 4-6
-            self.screen.blit(pygame.image.load('level7available3.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level7available3.jpg'),(0,0))
         elif 300 <= x <= 382 and 595 <= y <= 672:
             # press the button
-            self.screen.blit(pygame.image.load('level7available2.jpg'),(0,0))
+            self.screen.blit(pygame.image.load('img/level7available2.jpg'),(0,0))
         pygame.display.update()
 
     def actLevel4_6(self,x,y):
@@ -1356,11 +1359,11 @@ class CellWar(object):
 
     def finalLevel4_6(self):
         if len(self.levelCleared) == 4: #[0,1,2,3]
-            self.screen.blit(pygame.image.load("level456(1).jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level456(1).jpg"),(0,0))
         elif len(self.levelCleared) == 5: #[0,1,2,3,4]
-            self.screen.blit(pygame.image.load("level456(2).jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level456(2).jpg"),(0,0))
         else:
-            self.screen.blit(pygame.image.load("level456.jpg"),(0,0))
+            self.screen.blit(pygame.image.load("img/level456.jpg"),(0,0))
         (text,tempLevelCleared,font2) = self.enterInterface()
         warning,limit1,limit2 = (220,470),6,4
         if len(text) == 1 and ((eval(text) not in tempLevelCleared)\
@@ -1373,11 +1376,11 @@ class CellWar(object):
         self.mode = "Choose Level"
         (x,y) = pygame.mouse.get_pos()
         if 87 <= x <= 154 and 280 <= y <= 352:
-            image = pygame.image.load('level4-6unavailable1.jpg')
+            image = pygame.image.load('img/level4-6unavailable1.jpg')
             self.screen.blit(image,(0,0))
         elif 300 <= x <= 382 and 595 <= y <= 672:
             # press the button
-            image = pygame.image.load('level4-6unavailable2.jpg')
+            image = pygame.image.load('img/level4-6unavailable2.jpg')
             self.screen.blit(image,(0,0))
         pygame.display.update()
 
@@ -1385,11 +1388,11 @@ class CellWar(object):
         self.mode = "Choose Level"
         (x,y) = pygame.mouse.get_pos()
         if 87 <= x <= 154 and 280 <= y <= 352:
-            image = pygame.image.load('level7unavailable1.jpg')
+            image = pygame.image.load('img/level7unavailable1.jpg')
             self.screen.blit(image,(0,0))
         elif 300 <= x <= 382 and 595 <= y <= 672:
             # press the button
-            image = pygame.image.load('level7unavailable2.jpg')
+            image = pygame.image.load('img/level7unavailable2.jpg')
             self.screen.blit(image,(0,0))
         pygame.display.update()
 
@@ -1432,7 +1435,7 @@ class CellWar(object):
 
     def runCredit(self):
         self.mode = "Credit"
-        interface = pygame.image.load('GrayImage2.jpg')
+        interface = pygame.image.load('img/GrayImage2.jpg')
         self.screen.blit(interface,(0,0))
         displayCredit(self.screen,self.creInitx,self.creInity)
         if self.animateCount % 2 == 0:
@@ -1451,7 +1454,7 @@ class CellWar(object):
     def doAchievement(self):
         self.achievement = [self.gamesPlayed,self.loses,self.enemyKilled,\
                      self.needleLeft,self.totalMerge,self.totalAssist]
-        self.screen.blit(pygame.image.load("Achievement1.jpg"),(0,0))
+        self.screen.blit(pygame.image.load("img/Achievement1.jpg"),(0,0))
         gamesPlayed = self.achievement[0]
         loses,enemyKilled = self.achievement[1],self.achievement[2]
         needleLeft,totalMerge = self.achievement[3],self.achievement[4]
@@ -1489,14 +1492,14 @@ class CellWar(object):
         pygame.display.update()
 
     def findTitleImg(self,title):
-        titleImageList = [pygame.image.load(r"Achievement2(0).jpg"),\
-                          pygame.image.load(r"Achievement2(1).jpg"),\
-                          pygame.image.load(r"Achievement2(2).jpg"),\
-                          pygame.image.load(r"Achievement2(3).jpg"),\
-                          pygame.image.load(r"Achievement2(12).jpg"),\
-                          pygame.image.load(r"Achievement2(13).jpg"),\
-                          pygame.image.load(r"Achievement2(23).jpg"),\
-                          pygame.image.load(r"Achievement2.jpg")]
+        titleImageList = [pygame.image.load(r"img/Achievement2(0).jpg"),\
+                          pygame.image.load(r"img/Achievement2(1).jpg"),\
+                          pygame.image.load(r"img/Achievement2(2).jpg"),\
+                          pygame.image.load(r"img/Achievement2(3).jpg"),\
+                          pygame.image.load(r"img/Achievement2(12).jpg"),\
+                          pygame.image.load(r"img/Achievement2(13).jpg"),\
+                          pygame.image.load(r"img/Achievement2(23).jpg"),\
+                          pygame.image.load(r"img/Achievement2.jpg")]
         if title == []:
             return titleImageList[0]
         elif len(title) == 1:
@@ -1512,14 +1515,14 @@ class CellWar(object):
         self.tutorialStep = 2 # welcome!
 
     def loadImageList(self):
-        self.imageList = [pygame.image.load('GreenCell4.png'),\
-                     pygame.image.load('GreenCell9.png'),\
-                     pygame.image.load('GreenCell6.png'),\
-                     pygame.image.load('GreenCell8.png'),\
-                     pygame.image.load('GreenCell5.png'),\
-                     pygame.image.load('GreenCell7.png'),\
-                     pygame.image.load('GreenCell3.png'),]
-        self.needleImg,self.needleMode = pygame.image.load('needle.png'),False
+        self.imageList = [pygame.image.load('img/GreenCell4.png'),\
+                     pygame.image.load('img/GreenCell9.png'),\
+                     pygame.image.load('img/GreenCell6.png'),\
+                     pygame.image.load('img/GreenCell8.png'),\
+                     pygame.image.load('img/GreenCell5.png'),\
+                     pygame.image.load('img/GreenCell7.png'),\
+                     pygame.image.load('img/GreenCell3.png'),]
+        self.needleImg,self.needleMode = pygame.image.load('img/needle.png'),False
 
     def initImgAndMusic(self):
         self.winImgy = -700
@@ -1584,7 +1587,7 @@ class Target(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("sprite.jpg").convert()
+        self.image = pygame.image.load("img/sprite.jpg").convert()
 
         self.rect = self.image.get_rect()
     
