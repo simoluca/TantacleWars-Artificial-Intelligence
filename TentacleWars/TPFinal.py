@@ -36,8 +36,8 @@ class CellWar(object):
         outFile1 = open('myLevelCleared.txt','wb')
         outFile2 = open('myAchievement.txt','wb')
         pickle.dump(self.levelCleared,outFile1)
-############################ MAKE ACHIEVEMENT ###############################
-############################ HIGH SCORE?? ###############################
+    ############################ MAKE ACHIEVEMENT ###############################
+    ############################ HIGH SCORE?? ###############################
         pickle.dump(self.achievement,outFile2)
         outFile1.close()
         outFile2.close()
@@ -52,148 +52,228 @@ class CellWar(object):
          self.totalMerge,self.totalAssist] = self.achievement
 
     ###################################################
-    # SAVE AND LOAD PREVIOUS RECORD! IMPORTANT!
+    # SALVA E CARICA IL RECORD PRECEDENTE! IMPORTANTE!
     ###################################################
-    
-    def mousePressed(self,event):
+
+    def mousePressed(self, event):
+        # Verifica se il gioco è in esecuzione o in modalità tutorial
         if self.mode == "Running" or self.mode == "Tutorial":
-            self.recordPos = None # refresh everytime with NEW click
-            needlex,needley,imagex,imagey = 647,643,700,700
-            x,y = self.mousePos
-            if self.needleMode: # mouse is a needle now
-                self.findInjectedCell((x,y))
+            # Resetta la posizione del record ad ogni nuovo clic
+            self.recordPos = None
+            # Definizione delle coordinate per il pulsante dell'ago e dell'immagine dell'ago
+            needlex, needley, imagex, imagey = 647, 643, 700, 700
+            # Ottieni le coordinate del mouse
+            x, y = self.mousePos
+            # Se siamo in modalità ago
+            if self.needleMode:
+                # Trova la cella iniettata
+                self.findInjectedCell((x, y))
                 return
+            # Se il mouse è sopra il pulsante dell'ago
             if needlex <= x <= imagex and needley <= y <= imagey:
+                # Cambia l'icona del mouse all'immagine dell'ago e attiva la modalità ago
                 self.mouseFigure = self.needleImg
                 self.needleMode = True
                 return
-            self.lineDrawn = [(x,y),(x,y),False]
+            # Se il mouse è sopra una cella verde
+            self.lineDrawn = [(x, y), (x, y), False]  # Inizializza la lista per disegnare la linea
             for cell in self.cellList:
                 if cell.color == GREEN:
-                    if dist(x,y,cell.x,cell.y,cell.radius):
-                        self.lineDrawn = [(cell.x,cell.y),(cell.x,cell.y),True]
+                    # Se il mouse è sopra la cella
+                    if dist(x, y, cell.x, cell.y, cell.radius):
+                        # Imposta la posizione iniziale e finale della linea, e indica che la cella è stata selezionata
+                        self.lineDrawn = [(cell.x, cell.y), (cell.x, cell.y), True]
                         self.dealCell = cell
                         break
-            self.redrawAll()
+            self.redrawAll()  # Ridisegna tutto
         else:
+            # Se non siamo in modalità di gioco, gestisci altri eventi del mouse
             self.mouseOtherMode(event)
 
-    def mouseOtherMode(self,event):
+
+    def mouseOtherMode(self, event):
+        # Se il gioco è nella modalità "Scegli sfondo"
         if self.mode == "Choose Background":
-            if self.bgchoice != None: # such that the choice is valid
+            # Verifica se è stata fatta una scelta valida per lo sfondo
+            if self.bgchoice is not None:
+                # Imposta lo sfondo selezionato e passa alla modalità "Scegli livello"
                 self.background = self.backgroundImages[self.bgchoice]
+                # Riproduce un suono di conferma
                 pygame.mixer.Sound('music/Confirm.wav').play(0)
                 self.mode = "Choose Level"
+        # Se il gioco è nella modalità "Game Over"
         elif self.mode == "Game Over":
+            # Gestisce le scelte dopo la fine del gioco
             self.gameOverChoices(event)
+        # Se il gioco è nella modalità "Vittoria"
         elif self.mode == "Win":
+            # Gestisce le scelte dopo la vittoria
             self.winChoices(event)
+        # Se il gioco è nella modalità "Scegli livello"
         elif self.mode == "Choose Level":
+            # Identifica l'immagine del livello cliccata
             self.identifyLevelImg(event)
-        #print "Mouse Pressed"
+        # Stampa a scopo di debug
+        # print "Mouse Pressed"
 
-    def gameOverChoices(self,event):
-        if self.gameOverchoice != None:
-            self.gamesPlayed += 1
-            self.loses += 1
-            if self.gameOverchoice == 0:
-                self.chooseLevel()
-            elif self.gameOverchoice == 1:
-                self.init(self.levelChosen)
 
-    def winChoices(self,event):
-        if self.winchoice != None:
+
+    def gameOverChoices(self, event):
+        # Se è stata effettuata una scelta durante il game over
+            if self.gameOverchoice is not None:
+                # Incrementa il numero di partite giocate e di sconfitte
+                self.gamesPlayed += 1
+                self.loses += 1
+                # Gestisce le azioni in base alla scelta effettuata
+                if self.gameOverchoice == 0:
+                    # Torna alla schermata di scelta del livello
+                    self.chooseLevel()
+                elif self.gameOverchoice == 1:
+                    # Riavvia il livello corrente
+                    self.init(self.levelChosen)
+
+    def winChoices(self, event):
+        # Se è stata effettuata una scelta dopo la vittoria
+        if self.winchoice is not None:
+            # Incrementa il numero di partite giocate
             self.gamesPlayed += 1
-            if self.levelChosen >= 4: self.needleLeft += 1
-            #Completing level 4 or above get a needle award
+            # Se il livello superato è il livello 4 o superiore, aggiunge un ago
+            if self.levelChosen >= 4:
+                self.needleLeft += 1
+            # Gestisce le azioni in base alla scelta effettuata
             if self.winchoice == 0:
+                # Torna alla schermata di scelta del livello
                 self.chooseLevel()
             elif self.winchoice == 1:
+                # Riavvia il livello corrente
                 self.init(self.levelChosen)
-            elif self.winchoice == 2: # click the third button
-                self.levelCleared =list(range(self.levelChosen+1))
+            elif self.winchoice == 2:  # Se viene cliccato il terzo pulsante
+                # Imposta come completati tutti i livelli fino a quello corrente
+                self.levelCleared = list(range(self.levelChosen + 1))
                 totalLevel = 7
+                # Se il livello corrente non è l'ultimo livello, passa al successivo
                 if self.levelChosen != totalLevel:
                     self.levelChosen += 1
                     self.init(self.levelChosen)
                 else:
+                    # Torna al menu principale se tutti i livelli sono stati completati
                     self.doMainMenu()
 
-    def identifyLevelImg(self,event):
-        (x,y) = pygame.mouse.get_pos()
+
+    def identifyLevelImg(self, event):
+        # Ottiene le coordinate del mouse
+        (x, y) = pygame.mouse.get_pos()
+        # Se la pagina dei livelli è 1-3
         if self.levelPage == "1-3":
+            # Controlla se il mouse è sopra i bottoni per il livello finale, il menu principale o la pagina successiva
             if 252 <= x <= 415 and 243 <= y <= 397:
+                # Imposta la modalità per scegliere il livello finale
                 self.mode = "Choose Final Level"
+                # Mostra la schermata per il livello finale 1-3
                 self.finalLevel1_3()
             elif 300 <= x <= 382 and 595 <= y <= 672:
+                # Torna al menu principale
                 self.doMainMenu()
             elif 533 <= x <= 596 and 279 <= y <= 351:
+                # Passa alla pagina dei livelli 4-6
                 self.levelPage = "4-6"
+                # Mostra la schermata di selezione dei livelli
                 self.chooseLevel()
+        # Se la pagina dei livelli è 4-6
         elif self.levelPage == "4-6":
-            prereqLength = 3
+            prereqLength = 3  # Lunghezza necessaria per accedere ai livelli 4-6
             if len(self.levelCleared[1:]) >= prereqLength:
-                self.actLevel4_6(x,y)
+                # Mostra i livelli 4-6 come selezionabili
+                self.actLevel4_6(x, y)
             else:
-                self.unactLevel4_6(x,y)
+                # Mostra i livelli 4-6 come non selezionabili
+                self.unactLevel4_6(x, y)
         else:
-            prereqLength = 6
+            prereqLength = 6  # Lunghezza necessaria per accedere al livello 7
             if len(self.levelCleared[1:]) >= prereqLength:
-                self.actLevel7(x,y)
+                # Mostra il livello 7 come selezionabile
+                self.actLevel7(x, y)
             else:
-                self.unactLevel7(x,y)
+                # Mostra il livello 7 come non selezionabile
+                self.unactLevel7(x, y)
 
 
 
-            
-    def keyPressed(self,event):
-        print ("Key Pressed")
+
+                
+    def keyPressed(self, event):
+        print("Key Pressed")
         totalLevel = 7
+        # Se il gioco è in esecuzione
         if self.mode == "Running":
+            # Se il tasto premuto è 'q'
             if event.key == pygame.K_q:
+                # Ottiene il livello attuale
                 level = self.levelChosen
+                # Se il livello non è stato completato, lo aggiunge alla lista dei livelli completati
                 if level not in self.levelCleared:
                     self.levelCleared.append(self.levelChosen)
+                # Se il livello attuale è inferiore al livello massimo
                 if level < totalLevel:
+                    # Interrompe la riproduzione della musica corrente
                     self.music.fadeout(self.fadeTime)
+                    # Incrementa il numero di partite giocate
                     self.gamesPlayed += 1
-                    self.init(level+1)
+                    # Inizializza il livello successivo
+                    self.init(level + 1)
+        # Se il tasto premuto è 's', salva i dati
         if event.key == pygame.K_s:
             self.saveLoad()
+        # Se il tasto premuto è 'SPACE', legge i dati
         elif event.key == pygame.K_SPACE:
             self.readFile()
+        # Se il tasto premuto è 'p', stampa i livelli completati
         elif event.key == pygame.K_p:
-            print (self.levelCleared)
+            print(self.levelCleared)
+        # Se il tasto premuto è 'm', torna al menu principale
         elif event.key == pygame.K_m:
-            self.doMainMenu() # for demo purpose, go back to main menu
+            self.doMainMenu()  # a scopo dimostrativo, torna al menu principale
+            # Interrompe la riproduzione della musica corrente
             self.music.fadeout(self.fadeTime)
+        # Verifica il tasto premuto per il giudizio sulla modalità
         self.keyPressedModeJudge(event)
 
-    def keyPressedModeJudge(self,event):
-        # different keyPress functions in different mode!
+
+    def keyPressedModeJudge(self, event):
+        # Funzioni di pressione dei tasti diverse in modalità diverse!
         if self.mode == "Main Menu":
-            self.mainMenuKey(event)            
+            # Se il gioco è nel menu principale, gestisce i tasti del menu principale
+            self.mainMenuKey(event)
         elif self.mode == "Choose Background":
-            print ("Use your mouse to choose!")
+            # Se il gioco è nella scelta dello sfondo, avvisa di usare il mouse per la scelta
+            print("Usa il mouse per scegliere!")
         elif self.mode == "Choose Final Level":
+            # Se il gioco è nella scelta del livello finale, identifica il livello selezionato
             self.identifyLevel(event)
         elif self.mode == "Achievement":
+            # Se il gioco è nella schermata dei risultati, identifica l'azione sulla pagina dei risultati
             self.identifyAchievementPage(event)
         elif self.mode == "Credit":
+            # Se il gioco è nella schermata dei crediti, torna al menu principale se viene premuto 'r'
             if event.key == pygame.K_r:
                 self.doMainMenu()
         elif self.mode == "Help":
+            # Se il gioco è nella schermata di aiuto, gestisce le azioni relative alla navigazione delle pagine di aiuto
             if event.key == pygame.K_r:
-                self.doMainMenu() # if r is pressed in "help", get back to main menu
+                # Se viene premuto 'r' nella schermata di aiuto, torna al menu principale
+                self.doMainMenu()
             elif event.key == pygame.K_RIGHT:
+                # Se viene premuto il tasto freccia destra, passa alla pagina successiva dell'aiuto
                 if self.helpInd < 4:
-                    self.helpInd += 1 # maximum is 4
-                    self.screen.blit(self.helpPages[self.helpInd],(0,0))
+                    self.helpInd += 1  # massimo è 4
+                    self.screen.blit(self.helpPages[self.helpInd], (0, 0))
             elif event.key == pygame.K_LEFT:
+                # Se viene premuto il tasto freccia sinistra, torna alla pagina precedente dell'aiuto
                 if self.helpInd > 0:
-                    self.helpInd -= 1 # minimum is 0
-                    self.screen.blit(self.helpPages[self.helpInd],(0,0))
+                    self.helpInd -= 1  # minimo è 0
+                    self.screen.blit(self.helpPages[self.helpInd], (0, 0))
             pygame.display.update()
+
 
     def mainMenuKey(self,event):
         sound = pygame.mixer.Sound('music/Thip.wav')
@@ -280,39 +360,77 @@ class CellWar(object):
             self.clock.tick(self.fps)
 
     
-    def findInjectedCell(self,x,y):
-        adjust = 20*math.sqrt(2) # the adjusted position of x and y
+    def findInjectedCell(self, x, y):
+        """
+        Trova la cella iniettata nella posizione del mouse durante la modalità ago.
+
+        Parametri:
+            x (int): La coordinata x della posizione del mouse.
+            y (int): La coordinata y della posizione del mouse.
+        """
+        # Calcola l'aggiustamento per le coordinate x e y
+        adjust = 20 * math.sqrt(2)
+        # Cicla attraverso tutte le celle nella lista delle celle
         for cell in self.cellList:
-            if dist(cell.x,cell.y,x-adjust,y+adjust,30):
+            # Controlla se la distanza tra la posizione del mouse e il centro della cella è inferiore a 30
+            if dist(cell.x, cell.y, x - adjust, y + adjust, 30):
+                # Se ci sono ancora aghi disponibili, imposta la variabile getNeedle della cella su True
                 if self.needleLeft > 0:
                     cell.getNeedle = True
+                    # Decrementa il numero di aghi rimanenti
                     self.needleLeft -= 1
+                # Esci dal ciclo una volta trovata la cella iniettata
                 break
+        # Disattiva la modalità ago dopo aver trovato la cella iniettata
         self.needleMode = False
 
+
+
     def doInjection(self):
+        """
+        Simula il processo di iniezione per le celle che devono essere iniettate.
+
+        Ogni cella che deve essere iniettata aumenta il proprio tempo di iniezione.
+        Quando il tempo di iniezione raggiunge il massimo, il valore della cella viene modificato
+        in base alla sua condizione corrente. Se la cella è verde e il suo valore è inferiore al massimo,
+        il suo valore aumenta di uno; altrimenti, il suo valore diminuisce di uno. Se il valore della cella
+        diventa negativo, la cella viene convertita in verde e il valore assoluto negativo diventa il suo nuovo valore.
+        Viene incrementato il conteggio delle celle nemiche eliminate se una cella nemica viene convertita in verde.
+        Infine, viene ripristinato il flag getNeedle e il tempo di iniezione della cella.
+        """
         maxInjectTime = 30
+        # Scorrere tutte le celle nella lista delle celle
         for cell in self.cellList:
+            # Verifica se la cella deve essere iniettata
             if cell.getNeedle:
+                # Incrementa il tempo di iniezione della cella
                 cell.injectTime += 1
+                # Verifica se il tempo di iniezione è inferiore o uguale al massimo
                 if cell.injectTime <= maxInjectTime:
+                    # Se la cella è verde e il suo valore è inferiore al massimo, aumenta il suo valore di uno
                     if cell.color == GREEN and cell.value < self.maximum:
                         cell.value += 1
                     else:
+                        # Altrimenti, diminuisci il suo valore di uno
                         cell.value -= 1
-                        if cell.value < 0: # turn to GREEN!
+                        # Se il valore diventa negativo, converti la cella in verde
+                        if cell.value < 0:
+                            # Se la cella è grigia, reimposta il suo valore a 20
                             if cell.color == GRAY:
                                 cell.value = 20
+                            # Se la cella è un nemico, convertila in verde e incrementa il conteggio delle celle nemiche eliminate
                             else:
                                 cell.value = abs(cell.value)
                                 if cell.name != "EMB":
                                     self.forceMakeCollapse(cell)
                                 self.enemyKilled += 1
+                            # Imposta il colore della cella a verde
                             cell.color = GREEN
-                    #self.drawBubbleEffect(cell.x,cell.y)
                 else:
+                    # Quando il tempo di iniezione raggiunge il massimo, ripristina il flag getNeedle e il tempo di iniezione della cella
                     cell.getNeedle = False
                     cell.injectTime = 0
+
 
     def doTimeAdjust(self):
         if self.mode == "Tutorial":
