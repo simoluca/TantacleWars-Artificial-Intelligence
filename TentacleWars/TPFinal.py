@@ -82,7 +82,7 @@ class CellWar(object):
         if self.mode == "Choose Background":
             if self.bgchoice != None: # such that the choice is valid
                 self.background = self.backgroundImages[self.bgchoice]
-                pygame.mixer.Sound('Confirm.wav').play(0)
+                pygame.mixer.Sound('music/Confirm.wav').play(0)
                 self.mode = "Choose Level"
         elif self.mode == "Game Over":
             self.gameOverChoices(event)
@@ -196,7 +196,7 @@ class CellWar(object):
             pygame.display.update()
 
     def mainMenuKey(self,event):
-        sound = pygame.mixer.Sound('Thip.wav')
+        sound = pygame.mixer.Sound('music/Thip.wav')
         if event.key == pygame.K_DOWN:
             self.menuNumber += 1
             sound.play(0)
@@ -1420,7 +1420,7 @@ class CellWar(object):
         
 
     def runMenuOption(self,option): # choosing at depth 1
-        pygame.mixer.Sound('Confirm.wav').play(0)
+        pygame.mixer.Sound('music/Confirm.wav').play(0)
         if option == "Play":
             # Should choose level first
             self.doBackground()
@@ -1528,7 +1528,7 @@ class CellWar(object):
         self.winImgy = -700
         self.bgimage = self.bgImagePool[self.bgchoice]
         
-       # self.music = pygame.mixer.Sound('Christian.ogg')
+       # self.music = pygame.mixer.Sound('music/Christian.ogg')
        # self.musicChannel = self.music.play(-1)
         self.loadImageList()       
         # set self.animateCount to zero again
@@ -2058,7 +2058,7 @@ class Chain(object):
             self.subtractCellValue = True
         if dist(newx,newy,self.endx,self.endy,regularRad):
             self.shouldGrow = False
-           # collide = pygame.mixer.Sound('Collide.ogg')
+           # collide = pygame.mixer.Sound('music/Collide.ogg')
            # collide.play(0)
            # collide.set_volume(30)
             self.subtractCellValue = False
