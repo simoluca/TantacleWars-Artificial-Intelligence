@@ -56,7 +56,7 @@ class CellWar(object):
     ###################################################
 
     def mousePressed(self, event):
-        # Verifica se il gioco è in esecuzione o in modalità tutorial
+        # Verifica se il gioco e' in esecuzione o in modalita' tutorial
         if self.mode == "Running" or self.mode == "Tutorial":
             # Resetta la posizione del record ad ogni nuovo clic
             self.recordPos = None
@@ -64,52 +64,52 @@ class CellWar(object):
             needlex, needley, imagex, imagey = 647, 643, 700, 700
             # Ottieni le coordinate del mouse
             x, y = self.mousePos
-            # Se siamo in modalità ago
+            # Se siamo in modalita' ago
             if self.needleMode:
                 # Trova la cella iniettata
                 self.findInjectedCell((x, y))
                 return
-            # Se il mouse è sopra il pulsante dell'ago
+            # Se il mouse e' sopra il pulsante dell'ago
             if needlex <= x <= imagex and needley <= y <= imagey:
-                # Cambia l'icona del mouse all'immagine dell'ago e attiva la modalità ago
+                # Cambia l'icona del mouse all'immagine dell'ago e attiva la modalita' ago
                 self.mouseFigure = self.needleImg
                 self.needleMode = True
                 return
-            # Se il mouse è sopra una cella verde
+            # Se il mouse e' sopra una cella verde
             self.lineDrawn = [(x, y), (x, y), False]  # Inizializza la lista per disegnare la linea
             for cell in self.cellList:
                 if cell.color == GREEN:
-                    # Se il mouse è sopra la cella
+                    # Se il mouse e' sopra la cella
                     if dist(x, y, cell.x, cell.y, cell.radius):
-                        # Imposta la posizione iniziale e finale della linea, e indica che la cella è stata selezionata
+                        # Imposta la posizione iniziale e finale della linea, e indica che la cella e' stata selezionata
                         self.lineDrawn = [(cell.x, cell.y), (cell.x, cell.y), True]
                         self.dealCell = cell
                         break
             self.redrawAll()  # Ridisegna tutto
         else:
-            # Se non siamo in modalità di gioco, gestisci altri eventi del mouse
+            # Se non siamo in modalita' di gioco, gestisci altri eventi del mouse
             self.mouseOtherMode(event)
 
 
     def mouseOtherMode(self, event):
-        # Se il gioco è nella modalità "Scegli sfondo"
+        # Se il gioco e' nella modalita' "Scegli sfondo"
         if self.mode == "Choose Background":
-            # Verifica se è stata fatta una scelta valida per lo sfondo
+            # Verifica se e' stata fatta una scelta valida per lo sfondo
             if self.bgchoice is not None:
-                # Imposta lo sfondo selezionato e passa alla modalità "Scegli livello"
+                # Imposta lo sfondo selezionato e passa alla modalita' "Scegli livello"
                 self.background = self.backgroundImages[self.bgchoice]
                 # Riproduce un suono di conferma
                 pygame.mixer.Sound('music/Confirm.wav').play(0)
                 self.mode = "Choose Level"
-        # Se il gioco è nella modalità "Game Over"
+        # Se il gioco e' nella modalita' "Game Over"
         elif self.mode == "Game Over":
             # Gestisce le scelte dopo la fine del gioco
             self.gameOverChoices(event)
-        # Se il gioco è nella modalità "Vittoria"
+        # Se il gioco e' nella modalita' "Vittoria"
         elif self.mode == "Win":
             # Gestisce le scelte dopo la vittoria
             self.winChoices(event)
-        # Se il gioco è nella modalità "Scegli livello"
+        # Se il gioco e' nella modalita' "Scegli livello"
         elif self.mode == "Choose Level":
             # Identifica l'immagine del livello cliccata
             self.identifyLevelImg(event)
@@ -119,7 +119,7 @@ class CellWar(object):
 
 
     def gameOverChoices(self, event):
-        # Se è stata effettuata una scelta durante il game over
+        # Se e' stata effettuata una scelta durante il game over
             if self.gameOverchoice is not None:
                 # Incrementa il numero di partite giocate e di sconfitte
                 self.gamesPlayed += 1
@@ -133,11 +133,11 @@ class CellWar(object):
                     self.init(self.levelChosen)
 
     def winChoices(self, event):
-        # Se è stata effettuata una scelta dopo la vittoria
+        # Se e' stata effettuata una scelta dopo la vittoria
         if self.winchoice is not None:
             # Incrementa il numero di partite giocate
             self.gamesPlayed += 1
-            # Se il livello superato è il livello 4 o superiore, aggiunge un ago
+            # Se il livello superato e' il livello 4 o superiore, aggiunge un ago
             if self.levelChosen >= 4:
                 self.needleLeft += 1
             # Gestisce le azioni in base alla scelta effettuata
@@ -151,7 +151,7 @@ class CellWar(object):
                 # Imposta come completati tutti i livelli fino a quello corrente
                 self.levelCleared = list(range(self.levelChosen + 1))
                 totalLevel = 7
-                # Se il livello corrente non è l'ultimo livello, passa al successivo
+                # Se il livello corrente non e' l'ultimo livello, passa al successivo
                 if self.levelChosen != totalLevel:
                     self.levelChosen += 1
                     self.init(self.levelChosen)
@@ -163,11 +163,11 @@ class CellWar(object):
     def identifyLevelImg(self, event):
         # Ottiene le coordinate del mouse
         (x, y) = pygame.mouse.get_pos()
-        # Se la pagina dei livelli è 1-3
+        # Se la pagina dei livelli e' 1-3
         if self.levelPage == "1-3":
-            # Controlla se il mouse è sopra i bottoni per il livello finale, il menu principale o la pagina successiva
+            # Controlla se il mouse e' sopra i bottoni per il livello finale, il menu principale o la pagina successiva
             if 252 <= x <= 415 and 243 <= y <= 397:
-                # Imposta la modalità per scegliere il livello finale
+                # Imposta la modalita' per scegliere il livello finale
                 self.mode = "Choose Final Level"
                 # Mostra la schermata per il livello finale 1-3
                 self.finalLevel1_3()
@@ -179,7 +179,7 @@ class CellWar(object):
                 self.levelPage = "4-6"
                 # Mostra la schermata di selezione dei livelli
                 self.chooseLevel()
-        # Se la pagina dei livelli è 4-6
+        # Se la pagina dei livelli e' 4-6
         elif self.levelPage == "4-6":
             prereqLength = 3  # Lunghezza necessaria per accedere ai livelli 4-6
             if len(self.levelCleared[1:]) >= prereqLength:
@@ -204,16 +204,16 @@ class CellWar(object):
     def keyPressed(self, event):
         print("Key Pressed")
         totalLevel = 7
-        # Se il gioco è in esecuzione
+        # Se il gioco e' in esecuzione
         if self.mode == "Running":
-            # Se il tasto premuto è 'q'
+            # Se il tasto premuto e' 'q'
             if event.key == pygame.K_q:
                 # Ottiene il livello attuale
                 level = self.levelChosen
-                # Se il livello non è stato completato, lo aggiunge alla lista dei livelli completati
+                # Se il livello non e' stato completato, lo aggiunge alla lista dei livelli completati
                 if level not in self.levelCleared:
                     self.levelCleared.append(self.levelChosen)
-                # Se il livello attuale è inferiore al livello massimo
+                # Se il livello attuale e' inferiore al livello massimo
                 if level < totalLevel:
                     # Interrompe la riproduzione della musica corrente
                     self.music.fadeout(self.fadeTime)
@@ -221,56 +221,56 @@ class CellWar(object):
                     self.gamesPlayed += 1
                     # Inizializza il livello successivo
                     self.init(level + 1)
-        # Se il tasto premuto è 's', salva i dati
+        # Se il tasto premuto e' 's', salva i dati
         if event.key == pygame.K_s:
             self.saveLoad()
-        # Se il tasto premuto è 'SPACE', legge i dati
+        # Se il tasto premuto e' 'SPACE', legge i dati
         elif event.key == pygame.K_SPACE:
             self.readFile()
-        # Se il tasto premuto è 'p', stampa i livelli completati
+        # Se il tasto premuto e' 'p', stampa i livelli completati
         elif event.key == pygame.K_p:
             print(self.levelCleared)
-        # Se il tasto premuto è 'm', torna al menu principale
+        # Se il tasto premuto e' 'm', torna al menu principale
         elif event.key == pygame.K_m:
             self.doMainMenu()  # a scopo dimostrativo, torna al menu principale
             # Interrompe la riproduzione della musica corrente
             self.music.fadeout(self.fadeTime)
-        # Verifica il tasto premuto per il giudizio sulla modalità
+        # Verifica il tasto premuto per il giudizio sulla modalita'
         self.keyPressedModeJudge(event)
 
 
     def keyPressedModeJudge(self, event):
-        # Funzioni di pressione dei tasti diverse in modalità diverse!
+        # Funzioni di pressione dei tasti diverse in modalita' diverse!
         if self.mode == "Main Menu":
-            # Se il gioco è nel menu principale, gestisce i tasti del menu principale
+            # Se il gioco e' nel menu principale, gestisce i tasti del menu principale
             self.mainMenuKey(event)
         elif self.mode == "Choose Background":
-            # Se il gioco è nella scelta dello sfondo, avvisa di usare il mouse per la scelta
+            # Se il gioco e' nella scelta dello sfondo, avvisa di usare il mouse per la scelta
             print("Usa il mouse per scegliere!")
         elif self.mode == "Choose Final Level":
-            # Se il gioco è nella scelta del livello finale, identifica il livello selezionato
+            # Se il gioco e' nella scelta del livello finale, identifica il livello selezionato
             self.identifyLevel(event)
         elif self.mode == "Achievement":
-            # Se il gioco è nella schermata dei risultati, identifica l'azione sulla pagina dei risultati
+            # Se il gioco e' nella schermata dei risultati, identifica l'azione sulla pagina dei risultati
             self.identifyAchievementPage(event)
         elif self.mode == "Credit":
-            # Se il gioco è nella schermata dei crediti, torna al menu principale se viene premuto 'r'
+            # Se il gioco e' nella schermata dei crediti, torna al menu principale se viene premuto 'r'
             if event.key == pygame.K_r:
                 self.doMainMenu()
         elif self.mode == "Help":
-            # Se il gioco è nella schermata di aiuto, gestisce le azioni relative alla navigazione delle pagine di aiuto
+            # Se il gioco e' nella schermata di aiuto, gestisce le azioni relative alla navigazione delle pagine di aiuto
             if event.key == pygame.K_r:
                 # Se viene premuto 'r' nella schermata di aiuto, torna al menu principale
                 self.doMainMenu()
             elif event.key == pygame.K_RIGHT:
                 # Se viene premuto il tasto freccia destra, passa alla pagina successiva dell'aiuto
                 if self.helpInd < 4:
-                    self.helpInd += 1  # massimo è 4
+                    self.helpInd += 1  # massimo e' 4
                     self.screen.blit(self.helpPages[self.helpInd], (0, 0))
             elif event.key == pygame.K_LEFT:
                 # Se viene premuto il tasto freccia sinistra, torna alla pagina precedente dell'aiuto
                 if self.helpInd > 0:
-                    self.helpInd -= 1  # minimo è 0
+                    self.helpInd -= 1  # minimo e' 0
                     self.screen.blit(self.helpPages[self.helpInd], (0, 0))
             pygame.display.update()
 
@@ -362,7 +362,7 @@ class CellWar(object):
     
     def findInjectedCell(self, x, y):
         """
-        Trova la cella iniettata nella posizione del mouse durante la modalità ago.
+        Trova la cella iniettata nella posizione del mouse durante la modalita' ago.
 
         Parametri:
             x (int): La coordinata x della posizione del mouse.
@@ -372,7 +372,7 @@ class CellWar(object):
         adjust = 20 * math.sqrt(2)
         # Cicla attraverso tutte le celle nella lista delle celle
         for cell in self.cellList:
-            # Controlla se la distanza tra la posizione del mouse e il centro della cella è inferiore a 30
+            # Controlla se la distanza tra la posizione del mouse e il centro della cella e' inferiore a 30
             if dist(cell.x, cell.y, x - adjust, y + adjust, 30):
                 # Se ci sono ancora aghi disponibili, imposta la variabile getNeedle della cella su True
                 if self.needleLeft > 0:
@@ -381,7 +381,7 @@ class CellWar(object):
                     self.needleLeft -= 1
                 # Esci dal ciclo una volta trovata la cella iniettata
                 break
-        # Disattiva la modalità ago dopo aver trovato la cella iniettata
+        # Disattiva la modalita' ago dopo aver trovato la cella iniettata
         self.needleMode = False
 
 
@@ -392,7 +392,7 @@ class CellWar(object):
 
         Ogni cella che deve essere iniettata aumenta il proprio tempo di iniezione.
         Quando il tempo di iniezione raggiunge il massimo, il valore della cella viene modificato
-        in base alla sua condizione corrente. Se la cella è verde e il suo valore è inferiore al massimo,
+        in base alla sua condizione corrente. Se la cella e' verde e il suo valore e' inferiore al massimo,
         il suo valore aumenta di uno; altrimenti, il suo valore diminuisce di uno. Se il valore della cella
         diventa negativo, la cella viene convertita in verde e il valore assoluto negativo diventa il suo nuovo valore.
         Viene incrementato il conteggio delle celle nemiche eliminate se una cella nemica viene convertita in verde.
@@ -405,9 +405,9 @@ class CellWar(object):
             if cell.getNeedle:
                 # Incrementa il tempo di iniezione della cella
                 cell.injectTime += 1
-                # Verifica se il tempo di iniezione è inferiore o uguale al massimo
+                # Verifica se il tempo di iniezione e' inferiore o uguale al massimo
                 if cell.injectTime <= maxInjectTime:
-                    # Se la cella è verde e il suo valore è inferiore al massimo, aumenta il suo valore di uno
+                    # Se la cella e' verde e il suo valore e' inferiore al massimo, aumenta il suo valore di uno
                     if cell.color == GREEN and cell.value < self.maximum:
                         cell.value += 1
                     else:
@@ -415,10 +415,10 @@ class CellWar(object):
                         cell.value -= 1
                         # Se il valore diventa negativo, converti la cella in verde
                         if cell.value < 0:
-                            # Se la cella è grigia, reimposta il suo valore a 20
+                            # Se la cella e' grigia, reimposta il suo valore a 20
                             if cell.color == GRAY:
                                 cell.value = 20
-                            # Se la cella è un nemico, convertila in verde e incrementa il conteggio delle celle nemiche eliminate
+                            # Se la cella e' un nemico, convertila in verde e incrementa il conteggio delle celle nemiche eliminate
                             else:
                                 cell.value = abs(cell.value)
                                 if cell.name != "EMB":
